@@ -66,7 +66,7 @@ class AdminPanelProvider extends PanelProvider
                 'Dinas',
                 'Data',
                 'Ekraf',
-                'Settings',
+                'Pengaturan',
 
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
@@ -87,6 +87,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
+                    ->navigationGroup('Pengaturan')
                     ->gridColumns([
                         'default' => 1,
                         'sm' => 2,
@@ -111,7 +112,7 @@ class AdminPanelProvider extends PanelProvider
                     ->myProfile(
                         shouldRegisterUserMenu: true,
                         shouldRegisterNavigation: false,
-                        navigationGroup: 'Settings',
+                        navigationGroup: 'Pengaturan',
                         hasAvatars: true,
                         slug: 'my-profile'
                     )

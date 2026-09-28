@@ -28,14 +28,14 @@ class UserSeeder extends Seeder
         // ────────────────────────────────────────────────────────────────
         // 1. SUPER ADMIN
         //    Akses penuh ke seluruh sistem via Gate::before di AppServiceProvider
-        //    Email  : superadmin@local.com
-        //    Password: SuperAdmin@123
+        //    Email  : superadmin@gmail.com
+        //    Password: @Iamsuperadmin
         // ────────────────────────────────────────────────────────────────
         $superAdmin = User::create([
             'id'                => 1,
             'name'              => 'Super Admin',
-            'email'             => 'superadmin@local.com',
-            'password'          => Hash::make('SuperAdmin@123'),
+            'email'             => 'superadmin@gmail.com',
+            'password'          => Hash::make('@Iamsuperadmin'),
             'is_active'         => true,
             'email_verified_at' => now(),
         ]);
@@ -80,7 +80,7 @@ class UserSeeder extends Seeder
         $this->command->table(
             ['#', 'Nama', 'Email', 'Role', 'Password'],
             [
-                [1, 'Super Admin',   'superadmin@local.com', 'super_admin', 'SuperAdmin@123'],
+                [1, 'Super Admin',   'superadmin@gmail.com', 'super_admin', '@Iamsuperadmin'],
                 [2, 'Administrator', 'admin@local.com',      'admin',       'Admin@123'],
                 [3, 'Member',        'member@local.com',     'member',      'Member@123'],
             ]

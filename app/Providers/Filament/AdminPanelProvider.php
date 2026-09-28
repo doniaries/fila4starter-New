@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use BezhanSalleh\FilamentShield\Commands\SuperAdminCommand;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Filament\Panel;
@@ -104,7 +105,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentDeveloperLoginsPlugin::make()
                     ->enabled(app()->environment('local'))
                     ->users([
-                        'Super Admin' => 'doniaries@gmail.com',
+                        'Super Admin' => 'superadmin@gmail.com',
                     ]),
                 BreezyCore::make()
                     ->myProfile(

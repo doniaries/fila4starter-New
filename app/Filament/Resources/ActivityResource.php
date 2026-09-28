@@ -1,49 +1,48 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources;
 
+use App\Models\Activity;
+use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Widgets\TableWidget as BaseWidget;
-use App\Models\Activity;
+use App\Filament\Resources\ActivityResource\Pages;
 
-class LatestActivitiesWidget extends BaseWidget
+class ActivityResource extends Resource
 {
-    protected static ?int $sort = 1;
+    protected static ?string $model = Activity::class;
 
-    protected int | string | array $columnSpan = 'full';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-queue-list';
 
-    protected static ?string $heading = 'Latest Activities';
+    protected static string|\UnitEnum|null $navigationGroup = 'Pengaturan';
 
-    public static function canView(): bool
+    protected static ?string $modelLabel = 'Aktivitas';
+
+    protected static ?string $pluralModelLabel = 'Log Aktivitas';
+
+    protected static ?int $navigationSort = 10;
+
+    public static function canCreate(): bool
     {
-        // Opsi 1: Menggunakan nama permission langsung (jika pakai Spatie/Shield)
-        // Biasanya formatnya: 'view_any_resource_name'
-        return auth()->user()->can('view_any_activity');
-
-        // Opsi 2: Menggunakan Policy (Best Practice)
-        // Pastikan Model Activity sudah di-import
-        return auth()->user()->can('viewAny', Activity::class);
+        return false;
     }
 
-
-    public function table(Table $table): Table
+    public static function table(Table $table): Table
     {
         return $table
-            ->query(
-                Activity::query()->latest()->limit(10)
-            )
             ->columns([
                 Tables\Columns\TextColumn::make('causer.name')
                     ->label('Pengguna')
                     ->badge()
-                    ->color('primary'),
+                    ->color('primary')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('subject_type')
                     ->label('Subjek')
                     ->formatStateUsing(function ($state) {
                         return class_basename($state);
                     })
-                    ->badge(),
+                    ->badge()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('event')
                     ->label('Aktivitas')
                     ->badge()
@@ -60,7 +59,8 @@ class LatestActivitiesWidget extends BaseWidget
                         'deleted' => 'Dihapus',
                         'login' => 'Login',
                         default => ucfirst($state),
-                    }),
+                    })
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->label('Deskripsi')
                     ->formatStateUsing(fn($state, $record) => match ($record->event) {
@@ -75,6 +75,19 @@ class LatestActivitiesWidget extends BaseWidget
                     ->dateTime()
                     ->sortable(),
             ])
-            ->paginated(false);
+            ->defaultSort('created_at', 'desc')
+            ->actions([
+                // Tables\Actions\ViewAction::make(),
+            ])
+            ->bulkActions([
+                //
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListActivities::route('/'),
+        ];
     }
 }

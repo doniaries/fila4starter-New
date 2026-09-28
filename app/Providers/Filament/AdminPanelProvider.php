@@ -56,12 +56,12 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            ->navigationItems([
+            /* ->navigationItems([
                 \Filament\Navigation\NavigationItem::make('Halaman Depan')
                     ->url('/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-globe-alt')
                     ->sort(-3),
-            ])
+            ]) */
             ->navigationGroups([
                 'Dinas',
                 'Data',
@@ -128,7 +128,7 @@ class AdminPanelProvider extends PanelProvider
                     )
                     ->passwordUpdateRules(
                         rules: [Password::default()->mixedCase()->uncompromised(3)],
-                        requiresCurrentPassword: true,
+                        requiresCurrentPassword: false,
                     )
             ])
             ->authMiddleware([

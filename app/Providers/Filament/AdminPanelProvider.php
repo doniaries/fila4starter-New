@@ -8,7 +8,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Pages\Dashboard;
 use Filament\Support\Colors\Color;
-use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Filament\Http\Middleware\Authenticate;
@@ -86,14 +85,6 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                AutoLogoutPlugin::make()
-                    ->color(Color::Stone)
-                    ->icon('heroicon-o-arrow-right-start-on-clock')
-                    ->disableIf(fn() => Auth::id() === 1)
-                    ->logoutAfter(300)
-                    ->withoutWarning()
-                    ->withoutTimeLeft()
-                    ->timeLeftText('Sedang mengeluarkan Anda...'),
                 FilamentShieldPlugin::make()
                     ->gridColumns([
                         'default' => 1,

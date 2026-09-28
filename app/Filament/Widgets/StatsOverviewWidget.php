@@ -18,7 +18,7 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
                 ->color('primary')
                 ->chart([2, 3, 4, 3, 5, 4, 6, 5]),
 
-            Stat::make('Pengguna Aktif', User::where('is_active', true)->count())
+            Stat::make('Pengguna Aktif', User::query()->where('is_active', true)->count())
                 ->description('Pengguna dengan status aktif')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),

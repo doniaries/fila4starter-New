@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Activity;
-use App\Policies\ActivityPolicy;
 use Filament\Actions\EditAction;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Gate;
@@ -14,45 +12,32 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
+        // super_admin bypass semua Gate check
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super_admin') ? true : null;
         });
 
-        Gate::policy(Activity::class, ActivityPolicy::class);
-
-        // Mencegah lazy loading & N+1 Problem (Mode Strict)
+        // Strict mode — cegah N+1 di luar production
         Model::shouldBeStrict(! app()->isProduction());
 
+        // Global action config
         EditAction::configureUsing(function (EditAction $action) {
             $action->iconButton();
         });
 
+        // Log event login
         Event::listen(Login::class, LogSuccessfulLogin::class);
 
+        // Force HTTPS di production
         if (app()->isProduction()) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
-
-        \App\Models\Post::observe(\App\Observers\PostObserver::class);
-        \App\Models\Infografis::observe(\App\Observers\InfografisObserver::class);
-        \App\Models\Pengaturan::observe(\App\Observers\PengaturanObserver::class);
-        \App\Models\AgendaKegiatan::observe(\App\Observers\AgendaKegiatanObserver::class);
-        \App\Models\Pengumuman::observe(\App\Observers\PengumumanObserver::class);
-        \App\Models\Gallery::observe(\App\Observers\GalleryObserver::class);
-        \App\Models\ExternalLink::observe(\App\Observers\ExternalLinkObserver::class);
-        \App\Models\PelakuEkraf::observe(\App\Observers\PelakuEkrafObserver::class);
     }
 }

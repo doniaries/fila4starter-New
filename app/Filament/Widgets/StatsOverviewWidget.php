@@ -20,7 +20,7 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
 
             Stat::make('Pengguna Aktif', User::where('is_active', true)->count())
                 ->description('Pengguna dengan status aktif')
-                ->descriptionIcon('heroicon-m-user-check')
+                ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
 
             Stat::make('Total Role', Role::count())
